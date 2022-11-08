@@ -1,8 +1,6 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:setin/model/language.dart';
-
 import '../utils/constant.dart';
 import 'package:setin/storage/LocalPreference.dart';
 
