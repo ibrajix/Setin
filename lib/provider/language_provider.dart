@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:setin/model/language.dart';
 
 import '../utils/constant.dart';
+import 'package:setin/storage/LocalPreference.dart';
 
 class LanguageProvider extends ChangeNotifier{
 
@@ -18,11 +19,12 @@ class LanguageProvider extends ChangeNotifier{
 
  UnmodifiableListView<Language> get allLanguage {
    return UnmodifiableListView(_languages);
+   notifyListeners();
  }
 
- void setSelectedLanguage(Language language){
+ void setSelectedLanguage(Language language) async {
    language.languageSelected();
-   notifyListeners();
+   await LocalPreference.saveSelectedLanguage(language.name);
  }
 
 }

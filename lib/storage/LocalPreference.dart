@@ -6,6 +6,7 @@ import '../utils/constant.dart';
 class LocalPreference {
 
   static String selectedLanguageKey = "language";
+  static String selectedThemeKey = "theme";
   static SharedPreferences? _prefs;
 
   static Future<SharedPreferences?> init() async {
@@ -21,6 +22,16 @@ class LocalPreference {
   //get selected language
   static String? getSelectedLanguage() {
     return _prefs?.getString(selectedLanguageKey);
+  }
+
+  //save selected theme
+  static Future saveSelectedTheme(value) async {
+    await _prefs?.setBool(selectedThemeKey, value);
+  }
+
+  //get selected theme
+  static bool? getSelectedTheme(){
+    return _prefs?.getBool(selectedThemeKey);
   }
 
   //clear and remove preferences

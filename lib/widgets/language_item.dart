@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:setin/model/language_provider.dart';
+import 'package:setin/provider/language_provider.dart';
 import 'package:setin/storage/LocalPreference.dart';
 
 import '../model/language.dart';
@@ -31,15 +31,19 @@ class _DisplayLanguageState extends State<DisplayLanguage> {
 
   @override
   Widget build(BuildContext context) {
+
+    var languageProvider = Provider.of<LanguageProvider>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Row(
+      child: Column(
         children: [
           Consumer<LanguageProvider>(
             builder: (context, model, child){
               return InkWell(
                 onTap: () {
-                  setSelectedLanguage(widget.languages.name);
+                  languageProvider.setSelectedLanguage(widget.languages);
                   Navigator.pop(context);
                 },
                 child: Row(
@@ -47,7 +51,14 @@ class _DisplayLanguageState extends State<DisplayLanguage> {
                     Text(
                       widget.languages.name,
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 20),
+                    if(widget.languages.name == LocalPreference.getSelectedLanguage())
+                      Image.asset(
+                        Images.checkMark,
+                        color: isDarkMode ? Colors.white : Colors.black,
+                        height: 14,
+                        width: 14,
+                      ),
                   ],
                 ),
               );
@@ -56,10 +67,6 @@ class _DisplayLanguageState extends State<DisplayLanguage> {
         ],
       ),
     );
-  }
-
-  void setSelectedLanguage(String name) async {
-    await LocalPreference.saveSelectedLanguage(name);
   }
 
 }

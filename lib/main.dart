@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:setin/model/language_provider.dart';
+import 'package:setin/provider/language_provider.dart';
 import 'package:setin/navigation/routes.dart';
 import 'package:setin/storage/LocalPreference.dart';
 import 'package:setin/theme/bloc/theme_bloc.dart';

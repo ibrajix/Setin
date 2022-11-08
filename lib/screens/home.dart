@@ -8,12 +8,13 @@ import 'package:minimize_app/minimize_app.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:setin/model/language_provider.dart';
 import 'package:setin/storage/LocalPreference.dart';
 import 'package:setin/theme/colors.dart';
 import 'package:setin/utils/constant.dart';
+import 'package:setin/screens/notifications.dart';
 
 import '../widgets/language_item.dart';
+import 'package:setin/provider/language_provider.dart';
 
 
 class Home extends StatefulWidget {
@@ -23,16 +24,18 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 
-
 }
+
+
 
 class _HomeState extends State<Home> {
 
   String? _selectedLanguage;
 
   void getSelectedLanguage() {
-    setState(() {
-      _selectedLanguage = LocalPreference.getSelectedLanguage();
+    setState(()  {
+      _selectedLanguage =
+          LocalPreference.getSelectedLanguage();
     });
   }
 
@@ -178,8 +181,9 @@ class _HomeState extends State<Home> {
               margin: const EdgeInsets.only(top: 30),
               child: InkWell(
                 onTap: () {
+
                   //do something
-                  showModalBottomSheet(context: context, builder: (context) {
+                  Future future = showModalBottomSheet(context: context, builder: (context) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 50, left: 30),
                       child: Column(
@@ -190,6 +194,11 @@ class _HomeState extends State<Home> {
                       ),
                     );
                   });
+
+                  future.then((_) {
+                    getSelectedLanguage();
+                  });
+
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -220,7 +229,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     Text(
-                     _selectedLanguage?? Strings.hindi,
+                        _selectedLanguage?? Strings.hindi,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.customContentInGreyBg,
                       ),
@@ -245,7 +254,119 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: InkWell(
+                onTap: () {
+                  //go to notifications
+                  context.push(Destination.notificationsPath);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration:  BoxDecoration(
+                        color: Theme.of(context).colorScheme.customBlueBg,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(13),
+                          child: Icon(
+                            Icons.notifications,
+                            color: Theme.of(context).colorScheme.customContentBlueBg,
+                          )
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: const Text(
+                        Strings.notifications,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration:  BoxDecoration(
+                        color: Theme.of(context).colorScheme.customGreyBg,
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child:  Padding(
+                          padding: const EdgeInsets.all(13),
+                          child: Icon(
+                            Icons.keyboard_arrow_right,
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 30),
+              child: InkWell(
+                onTap: () {
+                  //go to notifications
+
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration:  BoxDecoration(
+                        color: Theme.of(context).colorScheme.customPurpleBg,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.all(13),
+                          child: Icon(
+                            Icons.dark_mode,
+                            color: Theme.of(context).colorScheme.customContentPurpleBg,
+                          )
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: const Text(
+                        Strings.darkMode,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child:  Padding(
+                          padding: const EdgeInsets.all(13),
+                          child: Switch(
+                            value: LocalPreference.getSelectedTheme() ?? false,
+                            onChanged: (value){
+                              setState(() {
+                                //change switch state
+                                LocalPreference.saveSelectedTheme(value);
+                              });
+                            },
+                          )
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
