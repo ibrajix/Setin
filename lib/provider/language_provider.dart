@@ -4,6 +4,7 @@ import 'package:setin/model/language.dart';
 import '../utils/constant.dart';
 import 'package:setin/storage/LocalPreference.dart';
 
+
 class LanguageProvider extends ChangeNotifier{
 
   final List<Language> _languages = [
